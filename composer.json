@@ -1,0 +1,16 @@
+{
+    "name": "yujiandong/simplemarkdown",
+    "type": "library",
+    "description": "Simple Markdown Editor",
+    "keywords": ["markdown","editor"],
+    "homepage": "https://github.com/yujiandong/simplemarkdown",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yu Jiandong",
+            "email": "flyyjd@gmail.com",
+            "homepage": "http://simpleforum.org/n/smd",
+            "role": "Developer"
+        }
+    ],
+}
