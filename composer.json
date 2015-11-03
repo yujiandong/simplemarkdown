@@ -12,5 +12,6 @@
             "homepage": "http://simpleforum.org/n/smd",
             "role": "Developer"
         }
-    ]
+    ],
+    "minimum-stability": "stable"
 }
