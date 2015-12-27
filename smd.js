@@ -209,25 +209,19 @@ SimpleMarkdown.prototype = {
 		}
 	},
 
-    toolbar: [
-	  {name: 'bold', action: toggleBold},
-	  {name: 'italic', action: toggleItalic},
-	  {name: 'code', action: toggleCodeBlock},
-	  '|',
-
-	  {name: 'quote', action: blockquote},
-	  {name: 'unordered-list', action: unOrderedList},
-	  {name: 'ordered-list', action: orderedList},
-	  '|',
-
-	  {name: 'link', action: drawLink},
-	  {name: 'image', action: drawImage},
-	  '|',
-
-	  {name: 'info', action: 'http://simpleforum.org/n/smd'},
-	  {name: 'preview', action: togglePreview},
-	  {name: 'fullscreen', action: toggleFullScreen}
-	],
+    toolbar: {
+	  bold: toggleBold,
+	  italic: toggleItalic,
+	  code: toggleCodeBlock,
+	  quote: blockquote,
+	  'unordered-list': unOrderedList,
+	  'ordered-list': orderedList,
+	  link: drawLink,
+	  image: drawImage,
+	  info: 'http://simpleforum.org/n/smd',
+	  preview: togglePreview,
+	  fullscreen: toggleFullScreen
+	},
 
 	hotkeys: {
 		66: toggleBold,			//Ctrl+B
@@ -267,15 +261,15 @@ SimpleMarkdown.prototype = {
 
 		});
 	},
-	createIcon: function(item) {
+	createIcon: function(name,action) {
 		var element;
-		if (item.name) {
+		if (name) {
 			element = document.createElement('a');
-			$(element).addClass('icon-'+item.name+' icon-block').attr('title', this.options.title[item.name]);
-			if (typeof item.action === 'function') {
-				$(element).on('click',function(e) {item.action(e, $(this).parent().next('.smd-input'));})
-			} else if (typeof item.action === 'string') {
-				$(element).attr('href', item.action).attr('target', '_blank');
+			$(element).addClass('icon-'+name+' icon-block icon-bind').attr('title', this.options.title[name]).attr('id', 'icon-id-'+name);
+			if (typeof action === 'function') {
+//				$(element).on('click',function(e) {action(e, $(this).parent().next('.smd-input'));});
+			} else if (typeof action === 'string') {
+				$(element).attr('href', action).attr('target', '_blank').removeClass('icon-bind');
 			}
 		} else if (item === '|') {
 			element = '<span class="separator"> | </span>';
@@ -291,15 +285,14 @@ SimpleMarkdown.prototype = {
 		var bar = document.createElement('div');
 		var self = this;
 		$(bar).addClass('smd-toolbar');
-		$.each(this.options.toolbar, function(key, item){
-			$(bar).append(self.createIcon(item));
+		$.each(this.options.toolbar, function(name, action){
+			$(bar).append(self.createIcon(name, action));
 		});
 		$('.smd-wrapper').prepend(bar);
+		$('.smd-toolbar a.icon-bind').on('click',function(e) {(self.options.toolbar[$(this).attr('id').replace('icon-id-', '')])(e, $(this).parent().next('.smd-input'));});
     },
 	render: function() {
-		this.target.parent().html("<div class=\"smd\">\n  <div class=\"smd-wrapper\">\n    </div>\n</div>");
-		this.target.addClass('smd-input');
-		$('.smd-wrapper').html(this.target);
+		this.target.addClass('smd-input').wrap("<div class=\"smd-wrapper\"></div>");
 		this.createToolbar();
 		this.createPriewArea();
 		this.bindHotKeys();
