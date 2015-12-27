@@ -210,17 +210,20 @@ SimpleMarkdown.prototype = {
 	},
 
     toolbar: {
-	  bold: toggleBold,
-	  italic: toggleItalic,
-	  code: toggleCodeBlock,
-	  quote: blockquote,
+	  'bold': toggleBold,
+	  'italic': toggleItalic,
+	  'code': toggleCodeBlock,
+	  'separator1': '',
+	  'quote': blockquote,
 	  'unordered-list': unOrderedList,
 	  'ordered-list': orderedList,
-	  link: drawLink,
-	  image: drawImage,
-	  info: 'http://simpleforum.org/n/smd',
-	  preview: togglePreview,
-	  fullscreen: toggleFullScreen
+	  'separator2': '',
+	  'link': drawLink,
+	  'image': drawImage,
+	  'separator3': '',
+	  'info': 'http://simpleforum.org/n/smd',
+	  'preview': togglePreview,
+	  'fullscreen': toggleFullScreen
 	},
 
 	hotkeys: {
@@ -263,7 +266,9 @@ SimpleMarkdown.prototype = {
 	},
 	createIcon: function(name,action) {
 		var element;
-		if (name) {
+		if (name.startsWith('separator')) {
+			element = '<span class="separator"> | </span>';
+		} else {
 			element = document.createElement('a');
 			$(element).addClass('icon-'+name+' icon-block icon-bind').attr('title', this.options.title[name]).attr('id', 'icon-id-'+name);
 			if (typeof action === 'function') {
@@ -271,8 +276,6 @@ SimpleMarkdown.prototype = {
 			} else if (typeof action === 'string') {
 				$(element).attr('href', action).attr('target', '_blank').removeClass('icon-bind');
 			}
-		} else if (item === '|') {
-			element = '<span class="separator"> | </span>';
 		}
 		return element;
 	},
