@@ -46,7 +46,7 @@ var blockquote = function(e, self) {
 	if (result === '') {
 		result = "> quote text";
 	} else {
-		result = '> ' + result;
+		result = '> ' + result.replace(/[\n\r]/g, "\n\> ");
 	}
 	$(self).selection('replace',{text: result, caret:'end'});
 };
